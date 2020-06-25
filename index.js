@@ -26,6 +26,8 @@ function formatQueryParams(params) {
 
 function displayResults(responseJson) {
 	console.log(responseJson);
+	$('#results-list').empty();
+
 	for (let i = 0; i < responseJson.length; i++){
 
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
