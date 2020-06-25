@@ -67,7 +67,7 @@ button {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  margin-top: 1em;
+  margin-top: 2em;
   margin-left: auto;
   margin-right: auto;
   height: 3em;
@@ -100,11 +100,12 @@ button.searchButton:hover {
   align-items: center;
   justify-content: space-around;
   margin: auto;
-  padding: 2em 5em 2em 5em;
+  padding: 2em 5em 0em 5em;
   margin-top: 2em;
   text-align: center;
   background-color: #fff;
   border-radius: 1em;
+
 }
 
 input#ingredientInput{
@@ -132,21 +133,69 @@ input#ingredientInput:focus-within{
   padding: 1em;
 }
 /* The ingredient List */
-ul#currentIngredientList {
+ul {
   color: #fff;
   margin: 0 auto;
+  padding: 1em;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+}
+
+.addBorder {
+border-radius: 30px;
+border: 1px solid #dcdcdc;
+}
+
+.listHeader {
+  padding: 0 0 1em 0;
+}
+
+.hidden {
+  display: none;
 }
 
 li {
   display: inline-block;
   border:1px solid #dcdcdc;
   padding: 1em;
-  margin: 0.5em;
   border-radius: 30px;
+  margin: 0.5em;
+}
+
+ul#results-list {
+  justify-content: space-around;
+  color: #00476a;
+}
+
+ul#currentIngredientList > li {
+
   background-color:#1083bb;
   cursor: pointer;
   text-transform: lowercase;
+}
+/* ul#results-list > li {
+  background-color: #fff;
+} */
+
+.fa-times {
+  padding-left: 0.5em;
+  transition: all 0.5s ease 0s;
+  -webkit-transition: all 0.5s ease 0s;
+}
+
+.fa-times:hover {
+  color: red;
+  transition: all 0.2s ease 0s;
+  -webkit-transition: all 0.2s ease 0s;
+}
+
+.red {
+  color: red;
+}
+
+.recipe-result img {
+  border-radius: 30px;
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.4);
+  margin: 1em;
 }

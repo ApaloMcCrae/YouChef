@@ -7,8 +7,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
               rel="stylesheet"
               type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="index.css" rel="stylesheet" type="text/css" />
-
     <link rel="manifest" href="images/favicon/site.webmanifest">
   </head>
   <body>
@@ -35,12 +35,18 @@
 
       </section>
       <section class = "ingredientListContainer">
+        <h3 class="listHeader hidden">Your Pantry</h3>
         <ul id="currentIngredientList">
         </ul>
         <button type="button" class="searchButton button autofocus hidden">Find Recipes</button>
 
       </section>
-
+        <section id="results" class="hidden">
+          <p id="js-error-message" class="error-message"></p>
+          <h2>You can make: </h2>
+          <ul id="results-list">
+          </ul>
+        </section>
 
     </main>
 
