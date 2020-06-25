@@ -16,6 +16,10 @@ body {
   color: #00476a;
 }
 
+#results {
+  margin-top: 3em;
+}
+
 header {
   text-align: center;
   color: #fff;
@@ -28,6 +32,8 @@ header h1 {
 h2 {
   color: #00476a;
 }
+
+
 sub {
   color: #1083bb;
 }
