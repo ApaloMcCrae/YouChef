@@ -16,7 +16,7 @@ body {
   color: #00476a;
 }
 
-.header {
+header {
   text-align: center;
   color: #fff;
   text-transform: uppercase;
@@ -59,7 +59,7 @@ hr {
   border: 0;
   height: 1px;
   width: 100%;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to right, rgb(252, 192, 42, 0), rgba(252, 192, 42, 0.75), rgba(252, 192, 42, 0));
 }
 
 button {
@@ -74,55 +74,79 @@ button {
   padding: 0em 2em;
   border-radius: 2em;
   border: 0;
-  box-shadow: 0px 3px 5px rgba(0,0,0,0.25);
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.4);
   color: white;
-  background-color: #1083bb;
+  background-color: #fdc02a;
   cursor: pointer;
   transition: all 0.5s ease 0s;
   -webkit-transition: all 0.5s ease 0s;
 }
 
-button:hover {
-  background-color: #fdc02a;
-  color: #fff;
-  box-shadow: 0px 3px 10px rgba(#816114, 0.7);
-  letter-spacing: 0.5em;
+button.searchButton:hover {
+  background-color: #d7a21f;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.3);
   transition: all 0.5s ease 0s;
   -webkit-transition: all 0.5s ease 0s;
-  transform: translateY(-3px);
 }
 
-.recyclingBin {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  margin-top: 0em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2em;
-  padding: 2em;
+.hidden {
+  display: none;
 }
 
-.bin {
+/* The container for the ingredient input */
+.pantry {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: auto;
-  padding: 2em 5em 15em 5em;
-  /* border: 0.2em #fdc02a solid; */
+  padding: 2em 5em 2em 5em;
   margin-top: 2em;
   text-align: center;
   background-color: #fff;
-  /* box-shadow: 0px 3px 15px rgba(0,0,0,0.1); */
   border-radius: 1em;
 }
 
-input.ingredients{
-  margin: 2em 1em;
+input#ingredientInput{
+  text-align: left;
+  margin: 2em 1em 1em 1em;
   padding: 1em;
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
-  border: 0px;
+  padding-left: 2em;
+  border-radius: 30px;
+  border: 1px solid #dcdcdc;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.05);
+  min-width: 300px;
+}
+
+
+input#ingredientInput:focus-within{
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+  outline:none;
+ }
+
+
+
+.ingredientListContainer {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1em;
+}
+/* The ingredient List */
+ul#currentIngredientList {
+  color: #fff;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+li {
+  display: inline-block;
+  border:1px solid #dcdcdc;
+  padding: 1em;
+  margin: 0.5em;
+  border-radius: 30px;
+  background-color:#1083bb;
+  cursor: pointer;
+  text-transform: lowercase;
 }
