@@ -14,7 +14,7 @@
 
 const apiKey = "73363f58e09943caa2e10ba4f99bba93";
 const recipeByIngSearchURL = "https://api.spoonacular.com/recipes/findByIngredients";
-const basicRecipeSearchURL = 'https://api.spoonacular.com/recipes/search'
+const bulkRecipeSearchURL = 'https://api.spoonacular.com/recipes/informationBulk'
 const STORE = [];
 
 //API Functions//
