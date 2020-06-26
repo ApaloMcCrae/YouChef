@@ -14,7 +14,8 @@
 
 const apiKey = "73363f58e09943caa2e10ba4f99bba93";
 const recipeByIngSearchURL = "https://api.spoonacular.com/recipes/findByIngredients";
-const bulkRecipeSearchURL = 'https://api.spoonacular.com/recipes/informationBulk'
+const basicRecipeSearchURL = 'https://api.spoonacular.com/recipes/search';
+const bulkRecipeSearchURL = 'https://api.spoonacular.com/recipes/informationBulk';
 const STORE = [];
 
 //API Functions//
@@ -45,6 +46,15 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 }
 
+function generateIDString(responseJSON) {
+    const recipeIDs = responseJSON.map(function(item) {
+        return item['id'];
+    });
+    const recipeIdString = recipeIDs.join(',');
+	console.log("This is the string of IDs: " + recipeIdString);
+	return recipeIdString;
+};
+
 function generateIngString(){
 	 const ingredientNameArray = STORE.map(function(item) {
    return item['name'];
@@ -54,14 +64,24 @@ function generateIngString(){
 	 return ingredientString;
 }
 
+function fetchJSON(url) {
+  return fetch(url)
+	.then(response => {
+		if (response.ok) {
+			return response.json();
+		}
+		throw new Error(response.statusText);
+	});
+}
 
 function fetchRecipes() {
+  console.log('fetchRecipes is being called');
 	const params = {
 		apiKey: apiKey,
 		ingredients: generateIngString(),
 		ranking: 2,
 		ignorePantry: true,
-		number: 25,
+		number: 2,
     // intolerances: "Dairy",
     // instructionsRequired: true
 	}
@@ -69,21 +89,34 @@ function fetchRecipes() {
 	const url = recipeByIngSearchURL + '?' + queryString;
 	console.log("This is the url: " + url);
 
-
-fetch(url)
-	.then(response => {
-		if (response.ok) {
-			return response.json();
-		}
-		throw new Error(response.statusText);
-	})
-	.then(responseJson => displayResults(responseJson))
-	.catch(err => {
-		alert(`Something went wrong: ${err.message}`);
-	});
-
+  console.log("This is the JSON from the bottom of fetchRecipes" + fetchJSON(url));
+  return fetchJSON(url);
 };
 
+/*
+Promise.all([fetch('a'), fetch('b')]).then(
+  data => {
+    // data is [result of fetch a, result of fetch b]
+  }
+)
+*/
+
+
+function fetchRecipeInfo(responseJSON) {
+    console.log('fetchRecipeInfo is being called');
+  const combine = infoData => responseJSON.map((r, idx) => ({...r, infoData: infoData[idx]}));
+
+  const params = {
+		apiKey: apiKey,
+        ids: generateIDString(responseJSON),
+	}
+
+	const qStr = formatQueryParams(params);
+	const url = bulkRecipeSearchURL + '?' + qStr;
+  console.log("This the the bulk url: \n" + url);
+
+  return fetchJSON(url).then(combine);
+}
 
 
 //Adding a new ingredient to the DOM
@@ -156,12 +189,24 @@ function inputHandler() {
 	});
 }
 
+const numberOfJsonResponses = 0;
+
+function printJson(responseJSON) {
+  numberOfJsonResponses += 1;
+  console.log("This is the JSON response #" + numberOfJsonResponses + "\n" + responseJSON);
+}
 
 
 function pantrySubmitHandler() {
 	$('.searchButton').on('click', e => {
 		e.preventDefault();
-		fetchRecipes();
+		fetchRecipes().then(
+      fetchRecipeInfo
+    ).then(
+      displayResults
+    ).catch(err => {
+      alert(`Something went wrong: ${err.message}`);
+    });
 	})
 };
 
