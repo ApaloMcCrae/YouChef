@@ -13,7 +13,8 @@
 // });
 
 const apiKey = "73363f58e09943caa2e10ba4f99bba93";
-const recipeSearchURL = "https://api.spoonacular.com/recipes/findByIngredients";
+const recipeByIngSearchURL = "https://api.spoonacular.com/recipes/findByIngredients";
+const basicRecipeSearchURL = 'https://api.spoonacular.com/recipes/search'
 const STORE = [];
 
 //API Functions//
@@ -32,10 +33,12 @@ function displayResults(responseJson) {
 
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     $('#results-list').append(
-      `<li class='recipe-result'><h3>${responseJson[i].title}</h3>
-
-      <p>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
-      <img src='${responseJson[i].image}' alt='${responseJson[i].title}' width="200">
+      `<li class='recipe-result'>
+        <img src='${responseJson[i].image}' alt='${responseJson[i].title}'>
+        <div class="recipeDescription">
+          <h3>${responseJson[i].title}</h3>
+          <p>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
+        </div>
       </li>`
     )};
   //display the results section
@@ -56,12 +59,14 @@ function fetchRecipes() {
 	const params = {
 		apiKey: apiKey,
 		ingredients: generateIngString(),
-		ranking: 1,
+		ranking: 2,
 		ignorePantry: true,
-		number: 10
+		number: 25,
+    // intolerances: "Dairy",
+    // instructionsRequired: true
 	}
 	const queryString = formatQueryParams(params);
-	const url = recipeSearchURL + '?' + queryString;
+	const url = recipeByIngSearchURL + '?' + queryString;
 	console.log("This is the url: " + url);
 
 
