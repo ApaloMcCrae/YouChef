@@ -35,10 +35,12 @@ function displayResults(responseJson) {
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     $('#results-list').append(
       `<li class='recipe-result'>
-        <img src='${responseJson[i].image}' alt='${responseJson[i].title}'>
+        <a href="${responseJson[i].infoData.sourceUrl}" target="_blank"><img src='${responseJson[i].image}' alt='${responseJson[i].title}'></a>
         <div class="recipeDescription">
           <h3>${responseJson[i].title}</h3>
-          <p>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
+          <p class='missing-ingredients'>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
+          <hr>
+          <p>Ready in <span class='green'>${responseJson[i].infoData.readyInMinutes}</span> minutes</p>
         </div>
       </li>`
     )};
@@ -81,7 +83,7 @@ function fetchRecipes() {
 		ingredients: generateIngString(),
 		ranking: 2,
 		ignorePantry: true,
-		number: 2,
+		number: 16,
     // intolerances: "Dairy",
     // instructionsRequired: true
 	}

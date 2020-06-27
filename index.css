@@ -63,8 +63,13 @@ a:hover {
   color: #00476a;
 
 }
-
 hr {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background-image: linear-gradient(to right, rgb(0,0,0, 0), rgba(0,0,0, 0.75), rgba(0,0,0, 0));
+}
+ hr.special {
   border: 0;
   height: 1px;
   width: 100%;
@@ -218,10 +223,27 @@ ul#results-list > li h3 {
   color: red;
 }
 
+.green {
+  color: green;
+}
+
 .recipe-result img {
-  border-radius: 10px;
-  box-shadow: 0px 3px 5px rgba(0,0,0,0.4);
+
+  margin: 0 auto;
+  width: 100%;
+}
+.recipe-result h3{
+  padding: 1em;
+}
+
+.recipe-result p {
+  padding: 10px 0px;
+}
+
+.recipe-result {
+  border: 1px solid #dcdcdc;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.05);
+  border-radius: 30px;
+  padding: 0;
   margin: 1em;
-  min-width: 80%;
-  max-width: 95%;
 }
