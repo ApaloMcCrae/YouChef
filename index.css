@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:wght@300;400;500;600;700&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,6 +14,7 @@ body {
   font-weight: 400;
   /* background: radial-gradient(circle at center, #1083bb, #1073bb, #1066bc); */
   color: #00476a;
+  background-color: rgba(252, 252, 250,0.3);
 }
 
 #results {
@@ -67,7 +68,7 @@ hr {
   border: 0;
   height: 1px;
   width: 100%;
-  background-image: linear-gradient(to right, rgb(0,0,0, 0), rgba(0,0,0, 0.75), rgba(0,0,0, 0));
+  background-image: linear-gradient(to right, rgba(221, 221, 221,.75), rgba(221, 221, 221,.95), rgba(221, 221, 221,.75));
 }
  hr.special {
   border: 0;
@@ -104,7 +105,7 @@ button.searchButton:hover {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* The container for the ingredient input */
@@ -117,7 +118,6 @@ button.searchButton:hover {
   padding: 2em 5em 0em 5em;
   margin-top: 2em;
   text-align: center;
-  background-color: #fff;
   border-radius: 1em;
 
 }
@@ -180,7 +180,7 @@ li {
 ul#results-list {
   justify-content: center;
   color: #00476a;
-  max-width: 1200px;
+  max-width: 1300px;
   text-align: center;
 }
 
@@ -193,9 +193,10 @@ ul#currentIngredientList > li {
 
 ul#results-list > li {
   background-color: #fff;
-  max-width: 255px;
+  width: 272px;
   overflow: hidden;
   text-align: center;
+  position: relative;
 }
 
 ul#results-list > li h3 {
@@ -228,22 +229,254 @@ ul#results-list > li h3 {
 }
 
 .recipe-result img {
-
   margin: 0 auto;
   width: 100%;
-}
-.recipe-result h3{
-  padding: 1em;
+
 }
 
 .recipe-result p {
-  padding: 10px 0px;
+  font-size: .9em;
+}
+
+.recipe-result p.missing-ingredients {
+  padding: 15px 0px;
+  position: absolute;
+  bottom: 0px;
+  left: 15px;
+  font-weight: 500;
+}
+
+.missing-ingredients {
+  color: #e9e9e9;
+}
+
+
+
+.recipe-name {
+  font-size: 1.45em;
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 18%;
+  left: 15px;
+  margin: 0;
+  color: white;
+  padding: 5px 15px 5px 0px;
+  text-shadow: rgba(0, 0, 0, 0.29) 0px 0px 10px;
+  text-align: left;
 }
 
 .recipe-result {
   border: 1px solid #dcdcdc;
-  box-shadow: 0px 3px 15px rgba(0,0,0,0.05);
-  border-radius: 30px;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  border-radius: 20px;
   padding: 0;
   margin: 1em;
+}
+
+.recipe-image {
+  height: 200px;
+  /* display: block; */
+}
+
+.readyInMin {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  padding: .5em;
+  color: white;
+  font-weight: 300;
+  font-size: 1em;
+  text-shadow: rgba(0, 0, 0, 0.95) 0px 0px 10px;
+
+}
+.minutesText {
+  font-weight: 500;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+
+div.loader {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  padding-top: 2em;
+}
+
+div.loader p {
+  margin: 1em 0 0 0;
+}
+
+div.logo {
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  position: relative;
+  background-color: white;
+}
+div.logo::before, div.logo::after {
+  z-index: 1;
+  box-sizing: border-box;
+  content: '';
+  position: absolute;
+  border: 4px solid transparent;
+  width: 0;
+  height: 0;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+}
+div.logo::before {
+  top: 0;
+  left: 0;
+  animation: border-before 1.5s infinite;
+  animation-direction: alternate;
+}
+div.logo::after {
+  bottom: 0;
+  right: 0;
+  animation: border-after 1.5s infinite;
+  animation-direction: alternate;
+}
+div.logo > div {
+  position: absolute;
+  opacity: 0;
+}
+div.logo div.white {
+  border-left: 4px solid black;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  animation: white 1.5s infinite;
+  animation-direction: alternate;
+}
+div.logo div.orange {
+  border-top: 4px solid black;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 0;
+  background-color: #F3B93F;
+  animation: orange 1.5s infinite;
+  animation-direction: alternate;
+}
+div.logo div.red {
+  border-right: 4px solid black;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background-color: #1083bb;
+  animation: red 1.5s infinite;
+  animation-direction: alternate;
+}
+
+@keyframes border-before {
+  0% {
+    width: 0;
+    height: 0;
+    border-top-color: black;
+    border-right-color: transparent;
+  }
+  12.49% {
+    border-right-color: transparent;
+  }
+  12.5% {
+    height: 0;
+    width: 100%;
+    border-top-color: black;
+    border-right-color: black;
+  }
+  25%,
+  100% {
+    width: 100%;
+    height: 100%;
+    border-top-color: black;
+    border-right-color: black;
+  }
+}
+@keyframes border-after {
+  0%,
+  24.99% {
+    width: 0;
+    height: 0;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+  }
+  25% {
+    width: 0;
+    height: 0;
+    border-left-color: transparent;
+    border-bottom-color: black;
+  }
+  37.49% {
+    border-left-color: transparent;
+    border-bottom-color: black;
+  }
+  37.5% {
+    height: 0;
+    width: 100%;
+    border-left-color: black;
+    border-bottom-color: black;
+  }
+  50%,
+  100% {
+    width: 100%;
+    height: 100%;
+    border-left-color: black;
+    border-bottom-color: black;
+  }
+}
+@keyframes red {
+  0%,
+  50% {
+    width: 0;
+    opacity: 0;
+  }
+  50.01% {
+    opacity: 1;
+  }
+  65%,
+  100% {
+    opacity: 1;
+    width: 27%;
+  }
+}
+@keyframes orange {
+  0%,
+  65% {
+    height: 0;
+    opacity: 0;
+  }
+  65.01% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 1;
+    height: 50%;
+  }
+}
+@keyframes white {
+  0%,
+  75% {
+    width: 0;
+    opacity: 0;
+  }
+  75.01% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 1;
+    width: 23%;
+  }
 }

@@ -26,8 +26,17 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
+// <li class='recipe-result'>
+//   <div class='recipe-image' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.7)),url(${responseJson[i].image});background-size: contain;background-position: center center;"><a href="${responseJson[i].infoData.sourceUrl}" target="_blank"><h3 class="recipe-name">${responseJson[i].title}</h3></a></div>
+//   <div class="recipeDescription">
+//     <p class='missing-ingredients'>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
+//     <hr>
+//     <p class="description-below">Ready in <span class='green'>${responseJson[i].infoData.readyInMinutes}</span> minutes</p>
+//   </div>
+// </li>
+
 function displayResults(responseJson) {
-	console.log(responseJson);
+  console.log(responseJson);
 	$('#results-list').empty();
 
 	for (let i = 0; i < responseJson.length; i++){
@@ -35,16 +44,17 @@ function displayResults(responseJson) {
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     $('#results-list').append(
       `<li class='recipe-result'>
-        <a href="${responseJson[i].infoData.sourceUrl}" target="_blank"><img src='${responseJson[i].image}' alt='${responseJson[i].title}'></a>
-        <div class="recipeDescription">
-          <h3>${responseJson[i].title}</h3>
-          <p class='missing-ingredients'>You're only missing <span class='red'>${responseJson[i].missedIngredientCount}</span> ingredients</p>
-          <hr>
-          <p>Ready in <span class='green'>${responseJson[i].infoData.readyInMinutes}</span> minutes</p>
-        </div>
+        <a href="${responseJson[i].infoData.sourceUrl}" target="_blank">
+          <div class='recipe-image' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].image});background-size: contain;background-position: center center;">
+            <div class="readyInMin"><i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${responseJson[i].infoData.readyInMinutes}min</p></div>
+            <h3 class="recipe-name">${responseJson[i].title}</h3>
+            <p class='missing-ingredients'>You're only missing <span class='green'> ${responseJson[i].missedIngredientCount}</span> ingredients</p>
+          </div>
+        </a>
       </li>`
     )};
   //display the results section
+  hideLoader();
   $('#results').removeClass('hidden');
 }
 
@@ -77,13 +87,14 @@ function fetchJSON(url) {
 }
 
 function fetchRecipes() {
+  initiateLoader();
   console.log('fetchRecipes is being called');
 	const params = {
 		apiKey: apiKey,
 		ingredients: generateIngString(),
 		ranking: 2,
 		ignorePantry: true,
-		number: 16,
+		number: 24,
     // intolerances: "Dairy",
     // instructionsRequired: true
 	}
@@ -198,6 +209,13 @@ function printJson(responseJSON) {
   console.log("This is the JSON response #" + numberOfJsonResponses + "\n" + responseJSON);
 }
 
+function initiateLoader() {
+$('.loader').removeClass('hidden');
+};
+
+function hideLoader() {
+  $('.loader').addClass('hidden');
+};
 
 function pantrySubmitHandler() {
 	$('.searchButton').on('click', e => {
@@ -216,6 +234,7 @@ function onLoad() {
 	inputHandler();
 	deleteIngredientHandler();
 	pantrySubmitHandler();
+  hideLoader();
 }
 
 $(onLoad);
