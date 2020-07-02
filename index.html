@@ -39,7 +39,6 @@
         <ul id="currentIngredientList">
         </ul>
         <button type="button" class="searchButton button autofocus hidden">Find Recipes</button>
-
       </section>
 
         <section id="results" class="hidden">
@@ -60,7 +59,23 @@
     </main>
 
 
+    <div class="flex align-center align-vert modal modal--align" id ='modal'>
+        <div class="modal__container">
+          <a class="modal__close modal__close--x" aria-hidden="true">&#x2715;</a>
+          <!-- Make the background image the recipe photo -->
+          <div class="recipeImage"></div>
+          <div class = 'recipeInformation'>
+              <h3 class="recipeTitle"></h3>
+              <hr>
+              <h4 class="recipeSummary"></h4>
+              <br>
+              <p class="usedIngredients"> You are using your: </p>
+              <p class="missingIngredients"> What you are missing: </p>
 
+          </div>
+
+        </div>
+    </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"

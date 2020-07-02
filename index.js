@@ -14,6 +14,8 @@ function formatQueryParams(params) {
 }
 
 
+//<a href="${responseJson[i].infoData.sourceUrl}" target="_blank">
+
 function displayResults(responseJson) {
   console.log(responseJson);
 	$('#results-list').empty();
@@ -22,20 +24,43 @@ function displayResults(responseJson) {
 
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     $('#results-list').append(
-      `<li class='recipe-result'>
-        <a href="${responseJson[i].infoData.sourceUrl}" target="_blank">
-          <div class='recipe-image' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].image});background-size: contain;background-position: center center;">
+      `<li class='recipe-result' data-item-id='${responseJson[i].id}'>
+          <div class='recipe-image modal-trigger' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].image});background-size: contain;background-position: center center;">
             <div class="readyInMin"><i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${responseJson[i].infoData.readyInMinutes}min</p></div>
             <h3 class="recipe-name">${responseJson[i].title}</h3>
             <p class='missing-ingredients'>You're only missing <span class='green'> ${responseJson[i].missedIngredientCount}</span> ingredients</p>
           </div>
-        </a>
       </li>`
     )};
+
   //display the results section
   hideLoader();
   $('#results').removeClass('hidden');
-}
+
+  function openModalHandler() {
+    $('#results-list').on('click','.recipe-result', function(e) {
+      e.preventDefault();
+      const recipeId = $(e.currentTarget).data('item-id');
+      console.log("This is the ID of recipe that was just clicked: " + recipeId);
+      const recipeObj = responseJson.find(obj => obj.id === recipeId);
+      console.log(recipeObj);
+      //$('.modal .recipeImage').css("background":`linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${recipeObj.image})`,"background-size" : "contain", "background-position" : "center center");
+      $('.modal .recipeTitle').text(recipeObj.title);
+      $('.modal .recipeSummary').html(recipeObj.infoData.summary);
+      let usedIngredients = '';
+      for (let i = 0; i < recipeObj.usedIngredientCount; i++) {
+        if (i > 0 && i == (recipeObj.usedIngredientCount - 1)) {
+          usedIngredients += "and";
+        }
+        usedIngredients += recipeObj.usedIngredients[i].name;
+      };
+      $('.modal .usedIngredients').append(`<span class = "green">${usedIngredients}</span>`);
+      $('.modal').addClass('modal--show');
+});
+  };
+//
+openModalHandler();
+};
 
 function generateIDString(responseJSON) {
     const recipeIDs = responseJSON.map(function(item) {
@@ -73,7 +98,7 @@ function fetchRecipes() {
 		ingredients: generateIngString(),
 		ranking: 2,
 		ignorePantry: true,
-		number: 24
+		number: 4
 	}
 	const queryString = formatQueryParams(params);
 	const url = recipeByIngSearchURL + '?' + queryString;
@@ -199,11 +224,74 @@ function pantrySubmitHandler() {
 	})
 };
 
+//Modal Functions
+function modalHandler() {
+  const modal = $('.modal');
+  const trigger = $('.modal-trigger');
+  const close = $('.modal__close'); // we loops this to catch the different closers
+
+  function closeModal() {
+    modal.removeClass('modal--show');
+    // Remove hide class after animation is done
+    afterAnimation = function() {
+      modal.removeClass('modal--hide');
+    }
+    var modalID = document.getElementById("modal");
+    // This listens for the CSS animations to finish and then hides the modal
+    modalID.addEventListener("webkitAnimationEnd", afterAnimation, false);
+    modalID.addEventListener("oAnimationEnd", afterAnimation, false);
+    modalID.addEventListener("msAnimationEnd", afterAnimation, false);
+    modalID.addEventListener("animationend", afterAnimation, false);
+  }
+
+  // Open the modal
+  // function openModalHandler() {
+  //   $('#results-list').on('click', '.recipe-result', function(e) {
+  //     e.preventDefault();
+  //     modal.addClass('modal--show');
+  //   });
+  // }
+
+
+  // Close the modal with any element with class 'modal__close'
+  for (var i=0; i < close.length; i++) {
+    close[i].onclick = function() {
+      closeModal();
+    }
+  }
+
+  // Click outside of the modal and close it
+$('.modal').on('click', function (e) {
+    if (e.currentTarget !== $('.modal__container')){
+      closeModal();
+    }
+
+  });
+
+$(window).on('keydown', function (e) {
+  if (e.keyCode == 27 && modal.hasClass('modal--show')){
+    closeModal();
+  }
+});
+
+  // Use the escape key to close modal
+  document.onkeyup = function(e) {
+    e = e || window.event;
+    if(modal.hasClass('modal--show')) {
+      if(e.keyCode == 27) {
+        closeModal();
+      }
+    }
+  }
+
+};
+
 function onLoad() {
 	inputHandler();
 	deleteIngredientHandler();
 	pantrySubmitHandler();
   hideLoader();
+  modalHandler();
 }
 
 $(onLoad);

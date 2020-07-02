@@ -104,6 +104,11 @@ button.searchButton:hover {
   -webkit-transition: all 0.5s ease 0s;
 }
 
+button:focus {
+    outline: none;
+    border: none;
+}
+
 .hidden {
   display: none !important;
 }
@@ -271,6 +276,10 @@ ul#results-list > li h3 {
   border-radius: 20px;
   padding: 0;
   margin: 1em;
+}
+
+.recipe-result:hover {
+  cursor: pointer;
 }
 
 .recipe-image {
@@ -479,4 +488,89 @@ div.logo div.red {
     opacity: 1;
     width: 23%;
   }
+}
+
+
+/* Modal Styling */
+/* demo only */
+.flex { display: flex; }
+.align-center { justify-content: center; }
+.align-vert,.align-vert.align-center { align-items: center; }
+/* end demo */
+
+.modal {
+  display: none;
+transition: all ease 1s;
+  }
+.modal--show,
+.modal--hide {
+  display: flex;
+  transition: all ease 1s;
+} /* classes fired by js for animation control */
+
+/* This is on the wrapper for the whole modal */
+.modal--align {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+.modal__container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: 800px;
+  padding: 20px;
+  margin: 12px;
+  background: #fff;
+  border-radius: 20px;
+}
+
+/* The .modal__close class is used in js but is modified '--x' here */
+.modal__close--x {
+  font-size: 1em; /* this is only because we use unicode for the X in this case */
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  color: lightgrey;
+  margin: 5px;
+}
+
+
+/* As there is no href to avoid the hash being added to the URL when clicked we add a pointer */
+/* This 'x' is hidden from screen readers as there is an accessible close button in the modal */
+.modal__close--x:hover {
+  cursor: pointer;
+  color: darkgrey;
+  transition: all ease 1s;
+
+}
+
+/* Animations */
+/* Open */
+.modal.modal--show {
+  animation: modal-open 0.3s;
+  transition: all ease 1s;
+
+}
+
+@keyframes modal-open {
+  0%    { opacity: 0; }
+  100%  { opacity: 1; }
+}
+
+/* Close */
+.modal.modal--hide {
+  animation: modal-close 0.5s;
+  transition: all ease 1s;
+
+}
+
+@keyframes modal-close {
+  0%    { opacity: 1; }
+  100%  { opacity: 0; }
 }
