@@ -25,7 +25,7 @@ function displayResults(responseJson) {
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     $('#results-list').append(
       `<li class='recipe-result' data-item-id='${responseJson[i].id}'>
-          <div class='recipe-image modal-trigger' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].image});background-size: contain;background-position: center center;">
+          <div class='recipe-image modal-trigger' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].infoData.image});background-size: contain;background-position: center center;">
             <div class="readyInMin"><i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${responseJson[i].infoData.readyInMinutes}min</p></div>
             <h3 class="recipe-name">${responseJson[i].title}</h3>
             <p class='missing-ingredients'>You're only missing <span class='green'> ${responseJson[i].missedIngredientCount}</span> ingredients</p>
@@ -42,24 +42,44 @@ function displayResults(responseJson) {
       e.preventDefault();
       const recipeId = $(e.currentTarget).data('item-id');
       console.log("This is the ID of recipe that was just clicked: " + recipeId);
+      //Finding the recipe that matches the ID of the recipe just clicked
       const recipeObj = responseJson.find(obj => obj.id === recipeId);
       console.log(recipeObj);
-      //$('.modal .recipeImage').css("background":`linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${recipeObj.image})`,"background-size" : "contain", "background-position" : "center center");
+      $('.modal .recipeImage').html(`<img src="${recipeObj.infoData.image}" alt=${recipeObj.title}>`);
       $('.modal .recipeTitle').text(recipeObj.title);
-      $('.modal .recipeSummary').html(recipeObj.infoData.summary);
-      let usedIngredients = '';
-      for (let i = 0; i < recipeObj.usedIngredientCount; i++) {
-        if (i > 0 && i == (recipeObj.usedIngredientCount - 1)) {
-          usedIngredients += "and";
-        }
-        usedIngredients += recipeObj.usedIngredients[i].name;
-      };
-      $('.modal .usedIngredients').append(`<span class = "green">${usedIngredients}</span>`);
-      $('.modal').addClass('modal--show');
-});
-  };
-//
-openModalHandler();
+      $('.modal .recipeTime').html(`<i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${recipeObj.infoData.readyInMinutes}min</p>`);
+
+
+      // Displaying used ingredients
+
+      //Making sure the ul is empty so that we can fill it with used ingredients
+      $('.modal .usedIngredients').empty();
+      //Making the list of ingredients
+      for (let i = 0; i < recipeObj.infoData.extendedIngredients.length; i++) {
+        let ingredientName = recipeObj.infoData.extendedIngredients[i].name;
+        let amount = recipeObj.infoData.extendedIngredients[i].amount;
+        let unit = recipeObj.infoData.extendedIngredients[i].measures.us.unitShort;
+        //let ingredientImage = infoData.extendedIngredients[i].image
+        $('.modal .usedIngredients').append( `<li class="usedIngredient"><strong>${amount} ${unit}</strong><span class='ingredientName'> ${ingredientName}</span></li>`);
+      }
+
+      $('.modal .recipeSteps').empty();
+      //Making the recipe instructions
+      if (recipeObj.infoData.analyzedInstructions[0]){
+      for (let i = 0; i < recipeObj.infoData.analyzedInstructions[0].steps.length; i++) {
+        let step = recipeObj.infoData.analyzedInstructions[0].steps[i].step;
+        let number = recipeObj.infoData.analyzedInstructions[0].steps[i].number;
+        $('.modal .recipeSteps').append( `<li class="recipeInstruction"><strong>${number}.</strong> ${step}</li>`);
+      }
+    }
+    else {
+      $('.modal .recipeSteps').append(`<a href="${recipeObj.infoData.sourceUrl}" target="_blank"><button>${recipeObj.infoData.sourceName}</button></a>`);
+    }
+
+    $('.modal').addClass('modal--show');
+})};
+
+  openModalHandler();
 };
 
 function generateIDString(responseJSON) {

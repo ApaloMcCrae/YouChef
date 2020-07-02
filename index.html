@@ -63,15 +63,23 @@
         <div class="modal__container">
           <a class="modal__close modal__close--x" aria-hidden="true">&#x2715;</a>
           <!-- Make the background image the recipe photo -->
-          <div class="recipeImage"></div>
-          <div class = 'recipeInformation'>
+          <div class="topHalf">
+            <div class="recipeImage"></div>
+            <div class="recipeHeader">
               <h3 class="recipeTitle"></h3>
-              <hr>
-              <h4 class="recipeSummary"></h4>
-              <br>
-              <p class="usedIngredients"> You are using your: </p>
-              <p class="missingIngredients"> What you are missing: </p>
-
+              <p class="recipeTime"></p>
+              <!-- <p class="missingIngredients"> Missing: </p> -->
+            </div>
+          </div>
+          <hr>
+          <div class = 'recipeInformation'>
+              <h3 > Ingredients </h3>
+              <ul class="usedIngredients"></ul>
+          </div>
+          <hr>
+          <div class = 'recipeInstructions'>
+              <h3 > Steps </h3>
+              <ol class="recipeSteps"></ol>
           </div>
 
         </div>

@@ -283,7 +283,7 @@ ul#results-list > li h3 {
 }
 
 .recipe-image {
-  height: 200px;
+  height: 180px;
   /* display: block; */
 }
 
@@ -500,7 +500,8 @@ div.logo div.red {
 
 .modal {
   display: none;
-transition: all ease 1s;
+  transition: all ease 1s;
+  color: rgb(51, 51, 51);
   }
 .modal--show,
 .modal--hide {
@@ -528,6 +529,7 @@ transition: all ease 1s;
   margin: 12px;
   background: #fff;
   border-radius: 20px;
+  padding-bottom: 1em;
 }
 
 /* The .modal__close class is used in js but is modified '--x' here */
@@ -537,7 +539,7 @@ transition: all ease 1s;
   top: 3px;
   right: 10px;
   color: lightgrey;
-  margin: 5px;
+  margin: 10px;
 }
 
 
@@ -547,7 +549,6 @@ transition: all ease 1s;
   cursor: pointer;
   color: darkgrey;
   transition: all ease 1s;
-
 }
 
 /* Animations */
@@ -573,4 +574,93 @@ transition: all ease 1s;
 @keyframes modal-close {
   0%    { opacity: 1; }
   100%  { opacity: 0; }
+}
+
+.topHalf {
+  display: flex;
+  flex-direction: row;
+  margin: 1em;
+}
+
+.recipeImage img {
+  height: 150px;
+  width: 220px;
+  border-radius: 20px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+
+}
+
+.modal .recipeTitle {
+  color: rgb(51, 51, 51);
+  font-size: 1.55em;
+  text-transform: capitalize;
+  padding-bottom: .5em;
+}
+ .recipeHeader {
+   padding-left: 1em;
+ }
+.usedIngredients {
+  text-transform: capitalize;
+  font-size: 16px;
+  line-height: 24px;
+  word-break: break-word;
+}
+
+.modal .recipeHeader .recipeTime,
+.modal .recipeHeader .recipeTitle {
+  text-align: left;
+}
+
+.modal .recipeTime {
+  color: grey;
+}
+
+.modal .recipeInformation h3,
+.modal .recipeInstructions h3 {
+  font-size: 1.45em;
+  padding-bottom: .5em;
+  text-align: left;
+}
+
+.modal .recipeInformation,
+.modal .recipeInstructions {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* ul.usedIngredients > li {
+} */
+
+ul.usedIngredients,
+ol.recipeSteps {
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-top: 0;
+  color: rgb(51, 51, 51);
+}
+
+ul.usedIngredients > li,
+ol.recipeSteps > li {
+  display: block;
+  text-align: left;
+  padding: 0;
+  list-style-type: disc;
+}
+
+ul.usedIngredients > li {
+  text-transform: lowercase;
+}
+
+ol.recipeSteps > li {
+  padding-bottom: 5px;
+  line-height: 24px;
+}
+
+ol.recipeSteps {
+  margin-bottom: 1em;
 }
