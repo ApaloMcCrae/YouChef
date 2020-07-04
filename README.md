@@ -1,6 +1,6 @@
 # YouChef
 
-YouChef helps you make the most of the ingredients you already have at home. By inputting even just a few   of the staples in your pantry and fridge, you can find hundreds of recipes. 
+YouChef helps you make the most of the ingredients you already have at home. By inputting even just a few   of the staples in your pantry or fridge, you can find hundreds of recipes. 
 
 
 
@@ -8,17 +8,12 @@ The app utilizes AJAX and JSON to fetch recipe information from sites all over t
 
 
 
-Features to come: 
-
-- Filter by allergies/diet restrictions
-- Create shopping list from missing ingredients
-- Search similar recipes
-
-
-
 #### Link to the live app
 
 **https://petermchoke.github.io/YouChef/**
+
+
+#### Some sample images of the site
 
 
 
