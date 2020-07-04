@@ -1,6 +1,6 @@
 const apiKey = "73363f58e09943caa2e10ba4f99bba93";
 const recipeByIngSearchURL = "https://api.spoonacular.com/recipes/findByIngredients";
-const basicRecipeSearchURL = 'https://api.spoonacular.com/recipes/search';
+const basicRecipeSearchURL = 'https://api.spoonacular.com/recipes/search'; //Unused
 const bulkRecipeSearchURL = 'https://api.spoonacular.com/recipes/informationBulk';
 const STORE = [];
 
@@ -14,8 +14,7 @@ function formatQueryParams(params) {
 }
 
 
-//<a href="${responseJson[i].infoData.sourceUrl}" target="_blank">
-
+//Display the recipe results and
 function displayResults(responseJson) {
   console.log(responseJson);
 	$('#results-list').empty();
@@ -23,12 +22,23 @@ function displayResults(responseJson) {
 	for (let i = 0; i < responseJson.length; i++){
 
 //change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
+  let ingredientPlural = "ingredients";
+  if (responseJson[i].missedIngredientCount === 1) {
+    ingredientPlural = 'ingredient';
+  }
+  let missingIngredientText =  `<p class='missing-ingredients'> You're only missing<span class='green'> ${responseJson[i].missedIngredientCount}</span> ${ingredientPlural}</p>`
+  if (responseJson[i].missedIngredientCount === 0) {
+    missingIngredientText = `<p class='missing-ingredients'><span class="green">You have all of the ingredients!</span></p>`;
+  }
+
+
+
     $('#results-list').append(
       `<li class='recipe-result' data-item-id='${responseJson[i].id}'>
           <div class='recipe-image modal-trigger' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].infoData.image});background-size: contain;background-position: center center;">
             <div class="readyInMin"><i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${responseJson[i].infoData.readyInMinutes}min</p></div>
             <h3 class="recipe-name">${responseJson[i].title}</h3>
-            <p class='missing-ingredients'>You're only missing <span class='green'> ${responseJson[i].missedIngredientCount}</span> ingredients</p>
+            ${missingIngredientText};
           </div>
       </li>`
     )};
@@ -37,8 +47,13 @@ function displayResults(responseJson) {
   hideLoader();
   $('#results').removeClass('hidden');
 
+
+
+//Handling when to open the modal with the recipe information
   function openModalHandler() {
     $('#results-list').on('click','.recipe-result', function(e) {
+      $('body').css('overflow','hidden');
+
       e.preventDefault();
       const recipeId = $(e.currentTarget).data('item-id');
       console.log("This is the ID of recipe that was just clicked: " + recipeId);
@@ -56,9 +71,12 @@ function displayResults(responseJson) {
       $('.modal .usedIngredients').empty();
       //Making the list of ingredients
       for (let i = 0; i < recipeObj.infoData.extendedIngredients.length; i++) {
-        let ingredientName = recipeObj.infoData.extendedIngredients[i].name;
+        const ingredientName = recipeObj.infoData.extendedIngredients[i].name;
         let amount = recipeObj.infoData.extendedIngredients[i].amount;
-        let unit = recipeObj.infoData.extendedIngredients[i].measures.us.unitShort;
+        if (amount % 1 !== 0) {
+          amount = amount.toFixed(2);
+        }
+        const unit = recipeObj.infoData.extendedIngredients[i].measures.us.unitShort;
         //let ingredientImage = infoData.extendedIngredients[i].image
         $('.modal .usedIngredients').append( `<li class="usedIngredient"><strong>${amount} ${unit}</strong><span class='ingredientName'> ${ingredientName}</span></li>`);
       }
@@ -73,32 +91,34 @@ function displayResults(responseJson) {
       }
     }
     else {
-      $('.modal .recipeSteps').append(`<a href="${recipeObj.infoData.sourceUrl}" target="_blank"><button>${recipeObj.infoData.sourceName}</button></a>`);
+      $('.modal .recipeSteps').append(`<a href="${recipeObj.infoData.sourceUrl}" target="_blank"><button>Go to ${recipeObj.infoData.sourceName}</button></a>`);
     }
-
     $('.modal').addClass('modal--show');
 })};
 
   openModalHandler();
 };
 
+
+
+//Creating a string of IDs so we can make a fetch for extended recipe info
 function generateIDString(responseJSON) {
     const recipeIDs = responseJSON.map(function(item) {
         return item['id'];
     });
     const recipeIdString = recipeIDs.join(',');
-	console.log("This is the string of IDs: " + recipeIdString);
 	return recipeIdString;
 };
 
+//Creating a string of our ingredients for the initial search by ingredients fetch
 function generateIngString(){
 	 const ingredientNameArray = STORE.map(function(item) {
    return item['name'];
 });
 	 const ingredientString = ingredientNameArray.join(',');
-	 console.log("This is the ingredient string: " + ingredientString);
 	 return ingredientString;
 }
+
 
 function fetchJSON(url) {
   return fetch(url)
@@ -110,6 +130,7 @@ function fetchJSON(url) {
 	});
 }
 
+//Searching for recipes with the ingredients from the user's "fridge"
 function fetchRecipes() {
   initiateLoader();
   console.log('fetchRecipes is being called');
@@ -118,7 +139,7 @@ function fetchRecipes() {
 		ingredients: generateIngString(),
 		ranking: 2,
 		ignorePantry: true,
-		number: 4
+		number: 40
 	}
 	const queryString = formatQueryParams(params);
 	const url = recipeByIngSearchURL + '?' + queryString;
@@ -128,7 +149,7 @@ function fetchRecipes() {
   return fetchJSON(url);
 };
 
-
+//Automatically fetching the extra info for each recipe
 function fetchRecipeInfo(responseJSON) {
     console.log('fetchRecipeInfo is being called');
   const combine = infoData => responseJSON.map((r, idx) => ({...r, infoData: infoData[idx]}));
@@ -152,6 +173,7 @@ function addNewIngredient(ingredientName) {
 	$('#ingredientInput').val('');
 }
 
+//Creating the list items in the "fridge"
 function ingredientHTML(ingredient) {
 	return `<li class='listItem' data-item-id='${ingredient.id}'>${ingredient.name}<i class="fa fa-times" aria-hidden="true"></i>
 </li>`;
@@ -174,7 +196,6 @@ function renderIngredients() {
 	$('#currentIngredientList').append(
 		STORE.map(ingredientHTML).join('\n')
 	);
-	console.log(STORE);
 	showPantry();
 }
 
@@ -209,19 +230,17 @@ function inputHandler() {
 
 	if (keyCode == TAB_CODE || keyCode == ENTER_CODE) {
 		e.preventDefault()
-		const newIngredient = $('#ingredientInput').val();
+		const newIngredient = $('#ingredientInput').val().trim();
+    if (!newIngredient){
+      //shake the bar
+      return;
+    }
 		addNewIngredient(newIngredient);
 		renderIngredients();
 		}
 	});
 }
 
-const numberOfJsonResponses = 0;
-
-function printJson(responseJSON) {
-  numberOfJsonResponses += 1;
-  console.log("This is the JSON response #" + numberOfJsonResponses + "\n" + responseJSON);
-}
 
 function initiateLoader() {
 $('.loader').removeClass('hidden');
@@ -250,31 +269,16 @@ function modalHandler() {
   const trigger = $('.modal-trigger');
   const close = $('.modal__close'); // we loops this to catch the different closers
 
+//Close the modal
   function closeModal() {
+    $('body').css('overflow','');
     modal.removeClass('modal--show');
-    // Remove hide class after animation is done
-    afterAnimation = function() {
-      modal.removeClass('modal--hide');
-    }
-    var modalID = document.getElementById("modal");
-    // This listens for the CSS animations to finish and then hides the modal
-    modalID.addEventListener("webkitAnimationEnd", afterAnimation, false);
-    modalID.addEventListener("oAnimationEnd", afterAnimation, false);
-    modalID.addEventListener("msAnimationEnd", afterAnimation, false);
-    modalID.addEventListener("animationend", afterAnimation, false);
   }
 
-  // Open the modal
-  // function openModalHandler() {
-  //   $('#results-list').on('click', '.recipe-result', function(e) {
-  //     e.preventDefault();
-  //     modal.addClass('modal--show');
-  //   });
-  // }
-
+//Open Modal is in displayResults()
 
   // Close the modal with any element with class 'modal__close'
-  for (var i=0; i < close.length; i++) {
+  for (let i=0; i < close.length; i++) {
     close[i].onclick = function() {
       closeModal();
     }
@@ -294,15 +298,7 @@ $(window).on('keydown', function (e) {
   }
 });
 
-  // Use the escape key to close modal
-  document.onkeyup = function(e) {
-    e = e || window.event;
-    if(modal.hasClass('modal--show')) {
-      if(e.keyCode == 27) {
-        closeModal();
-      }
-    }
-  }
+
 
 };
 

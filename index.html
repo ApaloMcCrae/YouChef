@@ -9,7 +9,10 @@
               type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="index.css" rel="stylesheet" type="text/css" />
-    <link rel="manifest" href="images/favicon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
   </head>
   <body>
 
@@ -26,7 +29,7 @@
       <section class="pantry">
 <!--The initial box to show the starting screen-->
 
-          <h2>What's in your pantry?</h2>
+          <h2>What's in your fridge?</h2>
           <br>
           <sub>After each ingredient, press tab</sub>
           <form action="GET" id='ingredientForm' autocomplete="off">
@@ -35,7 +38,7 @@
 
       </section>
       <section class = "ingredientListContainer">
-        <h3 class="listHeader hidden">Your Pantry</h3>
+        <h3 class="listHeader hidden">Your Food</h3>
         <ul id="currentIngredientList">
         </ul>
         <button type="button" class="searchButton button autofocus hidden">Find Recipes</button>
@@ -43,7 +46,7 @@
 
         <section id="results" class="hidden">
           <p id="js-error-message" class="error-message"></p>
-          <h2>You can make: </h2>
+          <h2>Your Menu</h2>
           <ul id="results-list">
           </ul>
         </section>
@@ -68,17 +71,18 @@
             <div class="recipeHeader">
               <h3 class="recipeTitle"></h3>
               <p class="recipeTime"></p>
+              <p class="servingSize"></p>
               <!-- <p class="missingIngredients"> Missing: </p> -->
             </div>
           </div>
           <hr>
-          <div class = 'recipeInformation'>
-              <h3 > Ingredients </h3>
+          <div class='recipeInformation'>
+              <h3> Ingredients </h3>
               <ul class="usedIngredients"></ul>
           </div>
           <hr>
-          <div class = 'recipeInstructions'>
-              <h3 > Steps </h3>
+          <div class='recipeInstructions'>
+              <h3> Steps </h3>
               <ol class="recipeSteps"></ol>
           </div>
 

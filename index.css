@@ -78,7 +78,7 @@ hr {
 }
 
 button {
-  font-size: 1em;
+  font-size: .8em;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3em;
@@ -97,7 +97,7 @@ button {
   -webkit-transition: all 0.5s ease 0s;
 }
 
-button.searchButton:hover {
+button:hover {
   background-color: #d7a21f;
   box-shadow: 0px 3px 10px rgba(0,0,0,0.3);
   transition: all 0.5s ease 0s;
@@ -149,7 +149,7 @@ input#ingredientInput:focus-within{
 .ingredientListContainer {
   max-width: 700px;
   margin: 0 auto;
-  padding: 1em;
+  padding: 1em 3em;
 }
 /* The ingredient List */
 ul {
@@ -164,6 +164,7 @@ ul {
 .addBorder {
 border-radius: 30px;
 border: 1px solid #dcdcdc;
+box-shadow: 0px 3px 15px rgba(0,0,0,0.05);
 }
 
 .listHeader {
@@ -286,6 +287,7 @@ ul#results-list > li h3 {
   height: 180px;
   /* display: block; */
 }
+
 
 .readyInMin {
   position: absolute;
@@ -526,10 +528,11 @@ div.logo div.red {
   max-width: 600px;
   max-height: 800px;
   padding: 20px;
-  margin: 12px;
+  margin: 16px;
   background: #fff;
   border-radius: 20px;
   padding-bottom: 1em;
+  overflow-y: scroll;
 }
 
 /* The .modal__close class is used in js but is modified '--x' here */
@@ -547,8 +550,8 @@ div.logo div.red {
 /* This 'x' is hidden from screen readers as there is an accessible close button in the modal */
 .modal__close--x:hover {
   cursor: pointer;
-  color: darkgrey;
-  transition: all ease 1s;
+  color: #545454;
+  transition: all ease .5s;
 }
 
 /* Animations */
@@ -630,6 +633,9 @@ div.logo div.red {
   text-align: left;
 }
 
+.modal button {
+  font-size: .7em;
+}
 /* ul.usedIngredients > li {
 } */
 
@@ -641,7 +647,7 @@ ol.recipeSteps {
   padding-bottom: 0;
   padding-left: 10px;
   padding-top: 0;
-  color: rgb(51, 51, 51);
+  color: rgb(66, 66, 66);
 }
 
 ul.usedIngredients > li,
@@ -663,4 +669,56 @@ ol.recipeSteps > li {
 
 ol.recipeSteps {
   margin-bottom: 1em;
+}
+
+
+@media only screen and (max-width: 500px) {
+  .recipeImage {
+    display: none;
+  }
+  .pantry {
+    padding: 1em 1em 0em 1em;
+    margin-top: 1em;
+  }
+  .pantry sub {
+    display: none;
+  }
+
+  header h1 {
+    font-size: 32px;
+}
+
+  input#ingredientInput {
+    margin: 1em 1.5em 1.5em 1em;
+    min-width: 250px;
+  }
+
+  ul#currentIngredientList > li {
+    font-size: .8em;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .modal__container {
+    padding: 10px;
+    margin: auto;
+    margin-top: 5em;
+    height: 90%;
+    padding-bottom: 2em;
+  }
+  .modal {
+    height: 100%;
+  }
+
+    .align-vert, .align-vert.align-center {
+      align-items: flex-end;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .ingredientListContainer {
+    padding: 1em ;
+}
 }
