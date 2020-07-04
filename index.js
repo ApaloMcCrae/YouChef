@@ -14,9 +14,10 @@ function formatQueryParams(params) {
 }
 
 
-//Display the recipe results and
+//Display the recipe results and populate the modal with info from responseJSON
+//This is the only large function in this code base.
+//It is long because it dynamically creates HTML and accounts for edge cases.
 function displayResults(responseJson) {
-  console.log(responseJson);
 	$('#results-list').empty();
 
 	for (let i = 0; i < responseJson.length; i++){
@@ -31,8 +32,6 @@ function displayResults(responseJson) {
     missingIngredientText = `<p class='missing-ingredients'><span class="green">You have all of the ingredients!</span></p>`;
   }
 
-
-
     $('#results-list').append(
       `<li class='recipe-result' data-item-id='${responseJson[i].id}'>
           <div class='recipe-image modal-trigger' style="background:linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.9)),url(${responseJson[i].infoData.image});background-size: contain;background-position: center center;">
@@ -43,7 +42,7 @@ function displayResults(responseJson) {
       </li>`
     )};
 
-  //display the results section
+  //hide the loading animation and display the results section
   hideLoader();
   $('#results').removeClass('hidden');
 
@@ -56,10 +55,8 @@ function displayResults(responseJson) {
 
       e.preventDefault();
       const recipeId = $(e.currentTarget).data('item-id');
-      console.log("This is the ID of recipe that was just clicked: " + recipeId);
       //Finding the recipe that matches the ID of the recipe just clicked
       const recipeObj = responseJson.find(obj => obj.id === recipeId);
-      console.log(recipeObj);
       $('.modal .recipeImage').html(`<img src="${recipeObj.infoData.image}" alt=${recipeObj.title}>`);
       $('.modal .recipeTitle').text(recipeObj.title);
       $('.modal .recipeTime').html(`<i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${recipeObj.infoData.readyInMinutes}min</p>`);
@@ -97,6 +94,8 @@ function displayResults(responseJson) {
 })};
 
   openModalHandler();
+
+//the end of displayResults
 };
 
 
@@ -133,7 +132,6 @@ function fetchJSON(url) {
 //Searching for recipes with the ingredients from the user's "fridge"
 function fetchRecipes() {
   initiateLoader();
-  console.log('fetchRecipes is being called');
 	const params = {
 		apiKey: apiKey,
 		ingredients: generateIngString(),
@@ -143,15 +141,11 @@ function fetchRecipes() {
 	}
 	const queryString = formatQueryParams(params);
 	const url = recipeByIngSearchURL + '?' + queryString;
-	console.log("This is the url: " + url);
-
-  console.log("This is the JSON from the bottom of fetchRecipes" + fetchJSON(url));
   return fetchJSON(url);
 };
 
 //Automatically fetching the extra info for each recipe
 function fetchRecipeInfo(responseJSON) {
-    console.log('fetchRecipeInfo is being called');
   const combine = infoData => responseJSON.map((r, idx) => ({...r, infoData: infoData[idx]}));
 
   const params = {
@@ -161,8 +155,6 @@ function fetchRecipeInfo(responseJSON) {
 
 	const qStr = formatQueryParams(params);
 	const url = bulkRecipeSearchURL + '?' + qStr;
-  console.log("This the the bulk url: \n" + url);
-
   return fetchJSON(url).then(combine);
 }
 
