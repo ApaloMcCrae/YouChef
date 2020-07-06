@@ -4,7 +4,7 @@ YouChef helps you make the most of the ingredients you already have at home. By 
 
 
 
-The app utilizes AJAX and JSON to fetch recipe information from sites all over the web. 
+The app utilizes AJAX and JSON to fetch recipe information from sites all over the web. It is built using HTML, CSS, and JavaScript with jQuery lending a hand here and there. 
 
 
 
@@ -12,12 +12,13 @@ The app utilizes AJAX and JSON to fetch recipe information from sites all over t
 
 **https://petermchoke.github.io/YouChef/**
 
+#### Link to the GitHub repo
+
+**https://github.com/PeterMcHoke/YouChef**
+
+
 
 #### Some sample images of the site
-
-
-
- 
 
 ![Screen Shot 2020-07-01 at 1.00.03 PM](https://tva1.sinaimg.cn/large/007S8ZIlgy1ggc0kb2qtxj30l40ke0uf.jpg)
 
