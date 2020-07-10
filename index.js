@@ -23,50 +23,66 @@ function hidePantry() {
   $('.listHeader').addClass('hidden');
 }
 
+function emptyMenuList() {
+  $('#results-list').empty();
+}
+
+function hideMenu() {
+  $('#results').hide();
+}
+
+function showMenu() {
+  $('#results').show();
+}
+
 function renderIngredients() {
   $('#currentIngredientList').empty();
   $('#currentIngredientList').append(STORE.map(ingredientHTML).join('\n'));
   showPantry();
+  $('#searchError').empty();
 }
 
 function inputHandler() {
-  $('#ingredientForm').on('keydown','#ingredientInput', e => {
+  $('#ingredientForm').on('keydown', '#ingredientInput', (e) => {
     const TAB_CODE = 9;
     const ENTER_CODE = 13;
-    const keyCode = e.keyCode;
+    const { keyCode } = e;
 
-	if (keyCode == TAB_CODE || keyCode == ENTER_CODE) {
-		e.preventDefault();
-		const newIngredient = $('#ingredientInput').val().trim();
-    if (!newIngredient){
-      //handling an empty input
-      return;
-  }
+    if (keyCode == TAB_CODE || keyCode == ENTER_CODE) {
+      e.preventDefault();
+      const newIngredient = $('#ingredientInput').val().trim();
+      if (!newIngredient) {
+      // handling an empty input
+        return;
+      }
       addNewIngredient(newIngredient);
       renderIngredients();
     }
   });
 }
-
-function pantrySubmitHandler() {
-  $('.searchButton').on('click', (e) => {
-    e.preventDefault();
-    fetchRecipes().then(
-      fetchRecipeInfo
-    ).then(
-      displayResults,
-    ).catch((err) => {
-      alert(`Something went wrong: ${err.message}`);
-    });
-  });
-}
-
 function initiateLoader() {
   $('.loader').removeClass('hidden');
 }
 
 function hideLoader() {
   $('.loader').addClass('hidden');
+}
+
+function handleError(error) {
+  hideLoader();
+  emptyMenuList();
+  hideMenu();
+  $('#searchError').html(`<h3> No luck! </h3><sub>Are you sure all of the ingredients are spelled correctly?</sub>`);
+}
+
+function pantrySubmitHandler() {
+  $('.searchButton').on('click', (e) => {
+    e.preventDefault();
+    fetchRecipes()
+      .then(fetchRecipeInfo)
+      .then(displayResults)
+      .catch(handleError);
+  });
 }
 
 // Encoding the query parameters
@@ -80,8 +96,9 @@ function formatQueryParams(params) {
 // This is the only large function in this code base.
 // It is long because it dynamically creates HTML and accounts for edge cases.
 function displayResults(responseJson) {
+  showMenu();
   $('#results-list').empty();
-
+  $('#searchError').empty();
   for (let i = 0; i < responseJson.length; i++) {
     // change ingredients to ingredient if responseJson[i].missedIngredientCount === 1
     let ingredientPlural = 'ingredients';
@@ -108,7 +125,7 @@ function displayResults(responseJson) {
   hideLoader();
   $('#results').removeClass('hidden');
 
-// Handling when to open the modal with the recipe information
+  // Handling when to open the modal with the recipe information
   function openModalHandler() {
     $('#results-list').on('click', '.recipe-result', (e) => {
       $('body').css('overflow', 'hidden');
@@ -118,7 +135,7 @@ function displayResults(responseJson) {
       // Finding the recipe that matches the ID of the recipe just clicked
       const recipeObj = responseJson.find((obj) => obj.id === recipeId);
       $('.modal .recipeImage').html(`<img src="${recipeObj.infoData.image}" alt=${recipeObj.title}>`);
-      $('.modal .recipeTitle').text(recipeObj.title);
+      $('.modal .recipeTitle').html(`<h3>${recipeObj.title}</h3>`);
       $('.modal .recipeTime').html(`<i class="fa fa-clock-o" aria-hidden="true"></i><p class="minutesText">${recipeObj.infoData.readyInMinutes}min</p>`);
 
       // Making sure the ul is empty so that we can fill it with used ingredients
@@ -172,28 +189,26 @@ function fetchJSON(url) {
       if (response.ok) {
         return response.json();
       }
-      throw new Error(response.statusText);
+      throw new Error(response.status);
     });
 }
 
 // Global variable of the parameters for the recipeByIngredient
 
-
 // Searching for recipes with the ingredients from the user's "fridge"
 function fetchRecipes() {
   initiateLoader();
   const params = {
-    apiKey: apiKey,
+    apiKey,
     ingredients: generateIngString(),
     ranking: 2,
     ignorePantry: true,
-    number: 40
-  }
+    number: 40,
+  };
   const queryString = formatQueryParams(params);
-  const url = recipeByIngSearchURL + '?' + queryString;
+  const url = `${recipeByIngSearchURL}?${queryString}`;
   return fetchJSON(url);
-};
-
+}
 
 // Automatically fetching the extra info for each recipe
 function fetchRecipeInfo(responseJSON) {

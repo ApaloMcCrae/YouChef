@@ -28,10 +28,11 @@ header {
 }
 
 header h1 {
-  font-size: 3em;
+  font-size: 32px;
 }
 h2 {
   color: #00476a;
+  font-size: 20px;
 }
 
 h3 {
@@ -120,8 +121,8 @@ button:focus {
   align-items: center;
   justify-content: space-around;
   margin: auto;
-  padding: 2em 5em 0em 5em;
-  margin-top: 2em;
+  padding: 1em 1em 0em 1em;
+  margin-top: 1em;
   text-align: center;
   border-radius: 1em;
 
@@ -129,13 +130,13 @@ button:focus {
 
 input#ingredientInput{
   text-align: left;
-  margin: 2em 1em 1em 1em;
+  margin: 1em 1.5em 1.5em 1em;
+  min-width: 250px;
   padding: 1em;
   padding-left: 2em;
   border-radius: 30px;
   border: 1px solid #dcdcdc;
   box-shadow: 0px 3px 15px rgba(0,0,0,0.05);
-  min-width: 300px;
 }
 
 
@@ -149,7 +150,11 @@ input#ingredientInput:focus-within{
 .ingredientListContainer {
   max-width: 700px;
   margin: 0 auto;
-  padding: 1em 3em;
+  padding: 1em;
+}
+
+#searchError {
+  padding-top: 1.5em;
 }
 /* The ingredient List */
 ul {
@@ -191,6 +196,7 @@ ul#results-list {
 }
 
 ul#currentIngredientList > li {
+  font-size: .8em;
   border:1px solid #dcdcdc;
   background-color:#1083bb;
   cursor: pointer;
@@ -361,7 +367,7 @@ div.logo > div {
   opacity: 0;
 }
 div.logo div.white {
-  border-left: 4px solid black;
+  border-left: 4px solid #373737;
   top: 0;
   bottom: 0;
   right: 0;
@@ -370,7 +376,7 @@ div.logo div.white {
   animation-direction: alternate;
 }
 div.logo div.orange {
-  border-top: 4px solid black;
+  border-top: 4px solid #373737;
   left: 0;
   bottom: 0;
   right: 0;
@@ -380,7 +386,7 @@ div.logo div.orange {
   animation-direction: alternate;
 }
 div.logo div.red {
-  border-right: 4px solid black;
+  border-right: 4px solid #373737;
   top: 0;
   bottom: 0;
   left: 0;
@@ -394,7 +400,7 @@ div.logo div.red {
   0% {
     width: 0;
     height: 0;
-    border-top-color: black;
+    border-top-color: #373737;
     border-right-color: transparent;
   }
   12.49% {
@@ -403,15 +409,15 @@ div.logo div.red {
   12.5% {
     height: 0;
     width: 100%;
-    border-top-color: black;
-    border-right-color: black;
+    border-top-color: #373737;
+    border-right-color: #373737;
   }
   25%,
   100% {
     width: 100%;
     height: 100%;
-    border-top-color: black;
-    border-right-color: black;
+    border-top-color: #373737;
+    border-right-color: #373737;
   }
 }
 @keyframes border-after {
@@ -426,24 +432,24 @@ div.logo div.red {
     width: 0;
     height: 0;
     border-left-color: transparent;
-    border-bottom-color: black;
+    border-bottom-color: #373737;
   }
   37.49% {
     border-left-color: transparent;
-    border-bottom-color: black;
+    border-bottom-color: #373737;
   }
   37.5% {
     height: 0;
     width: 100%;
-    border-left-color: black;
-    border-bottom-color: black;
+    border-left-color: #373737;
+    border-bottom-color: #373737;
   }
   50%,
   100% {
     width: 100%;
     height: 100%;
-    border-left-color: black;
-    border-bottom-color: black;
+    border-left-color: #373737;
+    border-bottom-color: #373737;
   }
 }
 @keyframes red {
@@ -497,7 +503,7 @@ div.logo div.red {
 /* demo only */
 .flex { display: flex; }
 .align-center { justify-content: center; }
-.align-vert,.align-vert.align-center { align-items: center; }
+.align-vert,.align-vert.align-center { align-items: flex-end;}
 /* end demo */
 
 .modal {
@@ -524,15 +530,17 @@ div.logo div.red {
 
 .modal__container {
   position: relative;
+  height: 90%;
   width: 100%;
   max-width: 600px;
   max-height: 800px;
-  padding: 20px;
-  margin: 16px;
   background: #fff;
   border-radius: 20px;
-  padding-bottom: 1em;
   overflow-y: scroll;
+  padding: 10px;
+  margin: auto;
+  margin-top: 5em;
+  padding-bottom: 2em;
 }
 
 /* The .modal__close class is used in js but is modified '--x' here */
@@ -593,7 +601,7 @@ div.logo div.red {
 
 }
 
-.modal .recipeTitle {
+.modal .recipeTitle h3{
   color: rgb(51, 51, 51);
   font-size: 1.55em;
   text-transform: capitalize;
@@ -610,7 +618,7 @@ div.logo div.red {
 }
 
 .modal .recipeHeader .recipeTime,
-.modal .recipeHeader .recipeTitle {
+.modal .recipeHeader .recipeTitle h3 {
   text-align: left;
 }
 
@@ -671,54 +679,59 @@ ol.recipeSteps {
   margin-bottom: 1em;
 }
 
+.pantry sub {
+  display: none;
+}
 
-@media only screen and (max-width: 500px) {
+.recipeImage {
+  display: none;
+}
+
+@media only screen and (min-width: 500px) {
   .recipeImage {
-    display: none;
+    display: block;
   }
+
   .pantry {
-    padding: 1em 1em 0em 1em;
-    margin-top: 1em;
+    padding: 2em 5em 0em 5em;
+    margin-top: 2em;
   }
+
   .pantry sub {
-    display: none;
+    display: block;
   }
 
   header h1 {
-    font-size: 32px;
-}
+    font-size: 3em;
+  }
 
   input#ingredientInput {
-    margin: 1em 1.5em 1.5em 1em;
-    min-width: 250px;
+    margin: 2em 1em 1em 1em;
+    min-width: 300px;
   }
 
   ul#currentIngredientList > li {
-    font-size: .8em;
+    font-size: 1em;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .modal__container {
-    padding: 10px;
-    margin: auto;
-    margin-top: 5em;
-    height: 100%;
-    padding-bottom: 2em;
-  }
-  .modal {
-    height: 100%;
+    max-height: 80%;
+    padding: 20px;
+    margin: 16px;
+    padding-bottom: 1em;
   }
 
-    .align-vert, .align-vert.align-center {
-      align-items: flex-end;
+  .align-vert, .align-vert.align-center {
+    align-items: center;
   }
 }
 
-@media only screen and (max-width: 370px) {
+@media only screen and (min-width: 370px) {
   .ingredientListContainer {
-    padding: 1em ;
-}
+    padding: 1em 3em;
+  }
 }
